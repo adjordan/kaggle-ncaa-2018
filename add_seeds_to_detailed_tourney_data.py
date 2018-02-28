@@ -7,11 +7,14 @@ def main():
     detailed_results.insert(6, 'LTeamSeed', None)
     seeds = pd.read_csv(root + 'NCAATourneySeeds.csv')
 
-    for index, row in detailed_results.iterrows():
+    for i, row in detailed_results.iterrows():
         wTeamSeedRow = seeds.loc[(seeds['Season'] == row['Season']) & (seeds['TeamID'] == row['WTeamID'])]
         lTeamSeedRow = seeds.loc[(seeds['Season'] == row['Season']) & (seeds['TeamID'] == row['LTeamID'])]
-        detailed_results.set_value(index, 'WTeamSeed', wTeamSeedRow['Seed'])
-        detailed_results.set_value(index, 'LTeamSeed', lTeamSeedRow['Seed'])
+        # detailed_results.iloc[index]['WTeamSeed'] = wTeamSeedRow.iloc[0]['Seed']
+        # detailed_results.iloc[index]['LTeamSeed'] = lTeamSeedRow.iloc[0]['Seed']
+
+        detailed_results.loc[detailed_results.index[i], 'WTeamSeed'] = wTeamSeedRow.loc[wTeamSeedRow.index[0], 'Seed']
+        detailed_results.loc[detailed_results.index[i], 'LTeamSeed'] = lTeamSeedRow.loc[lTeamSeedRow.index[0], 'Seed']
 
     detailed_results.to_csv('NCAATourneyDetailedResultsWithSeeds.csv')
 
